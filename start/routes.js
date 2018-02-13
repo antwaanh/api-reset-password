@@ -38,3 +38,9 @@ Route.post(
   '/password/forgot',
   'ForgotPasswordController.sendResetLinkEmail'
 ).validator('ForgotPasswordUser')
+
+Route.get('/password/reset/:token', 'PasswordResetController.show')
+
+Route.post('/password/reset', 'PasswordResetController.reset').validator(
+  'PasswordResetUser'
+)
