@@ -18,3 +18,14 @@ const Route = use('Route')
 Route.get('/', ({ request }) => {
   return { greeting: 'Hello world in JSON' }
 })
+
+Route.group(() => {
+  Route.resource('users', 'UserController')
+    .validator(
+      new Map([
+        [['users.store'], ['StoreUser']],
+        [['users.update'], ['UpdateUser']]
+      ])
+    )
+    .apiOnly()
+}).prefix('api/v1')
