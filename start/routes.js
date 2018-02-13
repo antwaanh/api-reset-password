@@ -20,7 +20,9 @@ Route.get('/', ({ request }) => {
 })
 
 Route.group(() => {
-  Route.post('login', 'AuthController.authorize').validator('AuthenticateUser')
+  Route.post('authorize', 'AuthController.authorize').validator(
+    'AuthenticateUser'
+  )
 
   Route.resource('users', 'UserController')
     .validator(
@@ -31,3 +33,8 @@ Route.group(() => {
     )
     .apiOnly()
 }).prefix('api/v1')
+
+Route.post(
+  '/password/forgot',
+  'ForgotPasswordController.sendResetLinkEmail'
+).validator('ForgotPasswordUser')
