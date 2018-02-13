@@ -20,6 +20,8 @@ Route.get('/', ({ request }) => {
 })
 
 Route.group(() => {
+  Route.post('login', 'AuthController.authorize').validator('AuthenticateUser')
+
   Route.resource('users', 'UserController')
     .validator(
       new Map([
