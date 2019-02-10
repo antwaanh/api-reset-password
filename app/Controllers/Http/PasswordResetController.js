@@ -32,12 +32,26 @@ class PasswordResetController {
       .where('email', email)
       .first()
 
-    const validated_token = await Hash.verify(token, reset_entry.token)
+    let validated_token = await Hash.verify(token, reset_entry.token)
+    
+    if (validated_token && this._isTokenExpired(reset_entry)) {
+      validated_token = false
+    }
 
     // delete/invalidate token
     await reset_entry.delete()
 
     return validated_token
+  }
+
+  _isTokenExpired(reset_entry) {
+    const MINUTE = 1000 * 60
+    const expires_in_minutes = Config.get('auth.password_reset.expires_in_minutes')
+
+    const expires_in_milliseconds = MINUTE * expires_in_minutes
+    const token_valid_since = Date.now() - expires_in_milliseconds;
+
+    return reset_entry.updated_at <= token_valid_since;
   }
 
   async _resetPassword (email, password) {

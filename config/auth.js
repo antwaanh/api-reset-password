@@ -71,5 +71,8 @@ module.exports = {
     options: {
       secret: 'self::app.appKey'
     }
+  },
+  password_reset: {
+    expires_in_minutes: 120,
   }
 }
